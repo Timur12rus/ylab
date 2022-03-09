@@ -1,7 +1,5 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Scanner;
 
 public class TicTacToe {
@@ -19,27 +17,28 @@ public class TicTacToe {
         table = new char[3][3];
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         new TicTacToe().game();
     }
 
-    void game() throws IOException {
+    void game() {
         initTable();
         loadRating();
-        while (true) {
+        boolean isEndGame = false;
+        while (!isEndGame) {
             turnHuman();
             if (checkWin(SIGN_X)) {
                 System.out.println("Победил игрок 1!");
                 counterPlayer1++;
-                break;
+                isEndGame = true;
             } else if (checkWin(SIGN_O)) {
                 System.out.println("Победил игрок 2!");
                 counterPlayer2++;
-                break;
+                isEndGame = true;
             }
             if (isTableFull()) {
                 System.out.println("Ничья!");
-                break;
+                isEndGame = true;
             }
         }
         System.out.println("Игра окончена!");
@@ -49,8 +48,22 @@ public class TicTacToe {
     }
 
     void tryAgain() {
+        String answer;
+        boolean isExit = false;
         System.out.println("Сыграем еще раз? (Y) - Да / (N) - Нет");
-        String answer = scanner.nextLine();
+        while (!isExit) {
+            answer = scanner.nextLine();
+            if (answer.equals("n") || answer.equals("N")) {
+                isExit = true;
+            }
+            if (answer.equals("Y") || answer.equals("y")) {
+                restartGame();
+            }
+        }
+    }
+
+    void restartGame() {
+        new TicTacToe().game();
     }
 
     void initTable() {
@@ -69,7 +82,6 @@ public class TicTacToe {
 
     void turnHuman() {
         int x, y;
-
         do {
             printTable();
             if (turnPlayer1) {
@@ -119,10 +131,10 @@ public class TicTacToe {
         return true;
     }
 
-    void loadRating() throws FileNotFoundException {
-        File file = new File("data.txt");
-        Scanner scanner = new Scanner(file);
+    void loadRating() {
         try {
+            File file = new File("data.txt");
+            Scanner scanner = new Scanner(file);
             String str = scanner.nextLine();
             String[] arrayCounter = str.split(":");
             counterPlayer1 = Integer.parseInt(arrayCounter[0]);
@@ -134,10 +146,14 @@ public class TicTacToe {
         }
     }
 
-    void saveRating() throws IOException {
-        File file = new File("data.txt");
-        FileWriter fileWriter = new FileWriter(file);
-        fileWriter.write(counterPlayer1 + ":" + counterPlayer2);
-        fileWriter.close();
+    void saveRating() {
+        try {
+            File file = new File("data.txt");
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write(counterPlayer1 + ":" + counterPlayer2);
+            fileWriter.close();
+        } catch (Exception e) {
+            System.out.println("Ошибка записи файла!");
+        }
     }
 }
