@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.FileWriter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class TicTacToe {
@@ -9,34 +11,46 @@ public class TicTacToe {
     private char[][] table;
     private Scanner scanner;
     private boolean turnPlayer1 = true;
-    private int counterPlayer1;
-    private int counterPlayer2;
+    private static int counterPlayer1;
+    private static int counterPlayer2;
     private static String namePlayer1;
     private static String namePlayer2;
+    private Map<String, Integer> ratingMap;
 
     public TicTacToe() {
         scanner = new Scanner(System.in);
         table = new char[3][3];
+        ratingMap = new HashMap<>();
     }
 
     public static void main(String[] args) {
-        initPlayers();
         new TicTacToe().game();
     }
 
     private void game() {
+        initPlayers();
+        ratingMap = loadRating();
+        if (!ratingMap.containsKey(namePlayer1)) {
+            ratingMap.put(namePlayer1, 0);
+        }
+        if (!ratingMap.containsKey(namePlayer2)) {
+            ratingMap.put(namePlayer2, 0);
+        }
+        counterPlayer1 = ratingMap.get(namePlayer1);
+        counterPlayer2 = ratingMap.get(namePlayer2);
         initTable();
-        loadRating();
         boolean isEndGame = false;
         while (!isEndGame) {
             turnHuman();
             if (checkWin(SIGN_X)) {
                 System.out.println("Победил " + namePlayer1 + "!");
                 counterPlayer1++;
+                ratingMap.put(namePlayer1, counterPlayer1);
                 isEndGame = true;
             } else if (checkWin(SIGN_O)) {
                 System.out.println("Победил " + namePlayer2 + "!");
                 counterPlayer2++;
+                ratingMap.put(namePlayer2, counterPlayer2);
                 isEndGame = true;
             }
             if (isTableFull()) {
@@ -45,12 +59,12 @@ public class TicTacToe {
             }
         }
         System.out.println("Игра окончена!");
-        saveRating();
         printTable();
+        saveRating(ratingMap);
         tryAgain();
     }
 
-    private static void initPlayers() {
+    private void initPlayers() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите имя первого игрока: ");
         namePlayer1 = scanner.nextLine();
@@ -74,6 +88,8 @@ public class TicTacToe {
     }
 
     private void restartGame() {
+        counterPlayer1 = 0;
+        counterPlayer2 = 0;
         new TicTacToe().game();
     }
 
@@ -142,36 +158,35 @@ public class TicTacToe {
         return true;
     }
 
-    private void loadRating() {
+    private Map<String, Integer> loadRating() {
+        HashMap<String, Integer> map = new HashMap<>();
         try {
             File file = new File("data.txt");
             Scanner scanner = new Scanner(file);
             while (scanner.hasNextLine()) {
-                String playerInfo = scanner.nextLine();
-                String[] info = playerInfo.split(":");
-                if (namePlayer1.equals(info[0])) {
-                    counterPlayer1 = Integer.parseInt(info[1]);
-                }
-                if (namePlayer2.equals(info[0])) {
-                    counterPlayer2 = Integer.parseInt(info[1]);
-                }
-                System.out.println("name: " + namePlayer1 + " count: " + counterPlayer1);
-                System.out.println("name: " + namePlayer2 + " count: " + counterPlayer2);
-                scanner.close();
+                String line = scanner.nextLine();
+                String[] str = line.split(":");
+                map.put(str[0], Integer.parseInt(str[1]));
+                System.out.println(str[0] + ":" + str[1]);
             }
+            scanner.close();
         } catch (Exception e) {
-            counterPlayer1 = 0;
-            counterPlayer2 = 0;
+
         }
+        return map;
     }
 
-    private void saveRating() {
+    private void saveRating(Map<String, Integer> map) {
         try {
             File file = new File("data.txt");
             FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write(namePlayer1 + ":" + counterPlayer1);
-            fileWriter.write("\n");
-            fileWriter.write(namePlayer2 + ":" + counterPlayer2);
+
+            for (Map.Entry<String, Integer> entry : map.entrySet()) {
+                String playerName = entry.getKey();
+                Integer value = entry.getValue();
+                fileWriter.write(playerName + ":" + value + "\n");
+                System.out.println(playerName + ":" + value);
+            }
             fileWriter.close();
         } catch (Exception e) {
             System.out.println("Ошибка записи файла!");
