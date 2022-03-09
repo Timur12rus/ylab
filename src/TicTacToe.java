@@ -1,3 +1,7 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class TicTacToe {
@@ -7,25 +11,31 @@ public class TicTacToe {
     char[][] table;
     Scanner scanner;
     boolean turnPlayer1 = true;
+    int counterPlayer1;
+    int counterPlayer2;
 
     TicTacToe() {
         scanner = new Scanner(System.in);
         table = new char[3][3];
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         new TicTacToe().game();
     }
 
-    void game() {
+    void game() throws IOException {
         initTable();
+        loadRating();
         while (true) {
             turnHuman();
             if (checkWin(SIGN_X)) {
                 System.out.println("Победил игрок 1!");
+                counterPlayer1++;
                 break;
             } else if (checkWin(SIGN_O)) {
                 System.out.println("Победил игрок 2!");
+                counterPlayer2++;
+                break;
             }
             if (isTableFull()) {
                 System.out.println("Ничья!");
@@ -33,6 +43,7 @@ public class TicTacToe {
             }
         }
         System.out.println("Игра окончена!");
+        saveRating();
         printTable();
         tryAgain();
     }
@@ -108,11 +119,25 @@ public class TicTacToe {
         return true;
     }
 
-    void loadRating() {
-
+    void loadRating() throws FileNotFoundException {
+        File file = new File("data.txt");
+        Scanner scanner = new Scanner(file);
+        try {
+            String str = scanner.nextLine();
+            String[] arrayCounter = str.split(":");
+            counterPlayer1 = Integer.parseInt(arrayCounter[0]);
+            counterPlayer2 = Integer.parseInt(arrayCounter[1]);
+            scanner.close();
+        } catch (Exception e) {
+            counterPlayer1 = 0;
+            counterPlayer2 = 0;
+        }
     }
 
-    void saveRating() {
-
+    void saveRating() throws IOException {
+        File file = new File("data.txt");
+        FileWriter fileWriter = new FileWriter(file);
+        fileWriter.write(counterPlayer1 + ":" + counterPlayer2);
+        fileWriter.close();
     }
 }
