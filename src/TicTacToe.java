@@ -11,6 +11,8 @@ public class TicTacToe {
     private boolean turnPlayer1 = true;
     private int counterPlayer1;
     private int counterPlayer2;
+    private static String namePlayer1;
+    private static String namePlayer2;
 
     public TicTacToe() {
         scanner = new Scanner(System.in);
@@ -18,6 +20,7 @@ public class TicTacToe {
     }
 
     public static void main(String[] args) {
+        initPlayers();
         new TicTacToe().game();
     }
 
@@ -28,11 +31,11 @@ public class TicTacToe {
         while (!isEndGame) {
             turnHuman();
             if (checkWin(SIGN_X)) {
-                System.out.println("Победил игрок 1!");
+                System.out.println("Победил " + namePlayer1 + "!");
                 counterPlayer1++;
                 isEndGame = true;
             } else if (checkWin(SIGN_O)) {
-                System.out.println("Победил игрок 2!");
+                System.out.println("Победил " + namePlayer2 + "!");
                 counterPlayer2++;
                 isEndGame = true;
             }
@@ -45,6 +48,14 @@ public class TicTacToe {
         saveRating();
         printTable();
         tryAgain();
+    }
+
+    private static void initPlayers() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Введите имя первого игрока: ");
+        namePlayer1 = scanner.nextLine();
+        System.out.println("Введите имя второго игрока: ");
+        namePlayer2 = scanner.nextLine();
     }
 
     private void tryAgain() {
@@ -85,9 +96,9 @@ public class TicTacToe {
         do {
             printTable();
             if (turnPlayer1) {
-                System.out.println("Ходит игрок 1:");
+                System.out.println("Ходит " + namePlayer1 + ":");
             } else {
-                System.out.println("Ходит игрок 2:");
+                System.out.println("Ходит " + namePlayer2 + ":");
             }
             System.out.println("Введите координату X (1..3):");
             x = scanner.nextInt() - 1;
@@ -135,11 +146,19 @@ public class TicTacToe {
         try {
             File file = new File("data.txt");
             Scanner scanner = new Scanner(file);
-            String str = scanner.nextLine();
-            String[] arrayCounter = str.split(":");
-            counterPlayer1 = Integer.parseInt(arrayCounter[0]);
-            counterPlayer2 = Integer.parseInt(arrayCounter[1]);
-            scanner.close();
+            while (scanner.hasNextLine()) {
+                String playerInfo = scanner.nextLine();
+                String[] info = playerInfo.split(":");
+                if (namePlayer1.equals(info[0])) {
+                    counterPlayer1 = Integer.parseInt(info[1]);
+                }
+                if (namePlayer2.equals(info[0])) {
+                    counterPlayer2 = Integer.parseInt(info[1]);
+                }
+                System.out.println("name: " + namePlayer1 + " count: " + counterPlayer1);
+                System.out.println("name: " + namePlayer2 + " count: " + counterPlayer2);
+                scanner.close();
+            }
         } catch (Exception e) {
             counterPlayer1 = 0;
             counterPlayer2 = 0;
@@ -150,7 +169,9 @@ public class TicTacToe {
         try {
             File file = new File("data.txt");
             FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write(counterPlayer1 + ":" + counterPlayer2);
+            fileWriter.write(namePlayer1 + ":" + counterPlayer1);
+            fileWriter.write("\n");
+            fileWriter.write(namePlayer2 + ":" + counterPlayer2);
             fileWriter.close();
         } catch (Exception e) {
             System.out.println("Ошибка записи файла!");
