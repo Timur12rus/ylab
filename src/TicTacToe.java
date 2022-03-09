@@ -3,16 +3,16 @@ import java.io.FileWriter;
 import java.util.Scanner;
 
 public class TicTacToe {
-    final char SIGN_X = 'x';
-    final char SIGN_O = 'o';
-    final char SIGN_EMPTY = '_';
-    char[][] table;
-    Scanner scanner;
-    boolean turnPlayer1 = true;
-    int counterPlayer1;
-    int counterPlayer2;
+    private final char SIGN_X = 'x';
+    private final char SIGN_O = 'o';
+    private final char SIGN_EMPTY = '_';
+    private char[][] table;
+    private Scanner scanner;
+    private boolean turnPlayer1 = true;
+    private int counterPlayer1;
+    private int counterPlayer2;
 
-    TicTacToe() {
+    public TicTacToe() {
         scanner = new Scanner(System.in);
         table = new char[3][3];
     }
@@ -21,7 +21,7 @@ public class TicTacToe {
         new TicTacToe().game();
     }
 
-    void game() {
+    private void game() {
         initTable();
         loadRating();
         boolean isEndGame = false;
@@ -47,7 +47,7 @@ public class TicTacToe {
         tryAgain();
     }
 
-    void tryAgain() {
+    private void tryAgain() {
         String answer;
         boolean isExit = false;
         System.out.println("Сыграем еще раз? (Y) - Да / (N) - Нет");
@@ -62,17 +62,17 @@ public class TicTacToe {
         }
     }
 
-    void restartGame() {
+    private void restartGame() {
         new TicTacToe().game();
     }
 
-    void initTable() {
+    private void initTable() {
         for (int row = 0; row < 3; row++)
             for (int col = 0; col < 3; col++)
                 table[row][col] = SIGN_EMPTY;
     }
 
-    void printTable() {
+    private void printTable() {
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++)
                 System.out.print(table[row][col] + " ");
@@ -80,7 +80,7 @@ public class TicTacToe {
         }
     }
 
-    void turnHuman() {
+    private void turnHuman() {
         int x, y;
         do {
             printTable();
@@ -102,13 +102,13 @@ public class TicTacToe {
         turnPlayer1 = !turnPlayer1;
     }
 
-    boolean isCellValid(int x, int y) {
+    private boolean isCellValid(int x, int y) {
         if (x < 0 || y < 0 || x >= 3 || y >= 3)
             return false;
         return table[y][x] == SIGN_EMPTY;
     }
 
-    boolean checkWin(char dot) {
+    private boolean checkWin(char dot) {
         for (int i = 0; i < 3; i++)
             if ((table[i][0] == dot && table[i][1] == dot &&
                     table[i][2] == dot) ||
@@ -123,7 +123,7 @@ public class TicTacToe {
         return false;
     }
 
-    boolean isTableFull() {
+    private boolean isTableFull() {
         for (int row = 0; row < 3; row++)
             for (int col = 0; col < 3; col++)
                 if (table[row][col] == SIGN_EMPTY)
@@ -131,7 +131,7 @@ public class TicTacToe {
         return true;
     }
 
-    void loadRating() {
+    private void loadRating() {
         try {
             File file = new File("data.txt");
             Scanner scanner = new Scanner(file);
@@ -146,7 +146,7 @@ public class TicTacToe {
         }
     }
 
-    void saveRating() {
+    private void saveRating() {
         try {
             File file = new File("data.txt");
             FileWriter fileWriter = new FileWriter(file);
