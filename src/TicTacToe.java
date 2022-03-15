@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -17,15 +18,18 @@ public class TicTacToe {
     private static String namePlayer2;
     private Player player1, player2;
     private Map<String, Integer> ratingMap;
+    private ArrayList<Step> steps;
 
     public TicTacToe() {
         scanner = new Scanner(System.in);
         table = new char[3][3];
+        steps = new ArrayList<>();
         ratingMap = new HashMap<>();
     }
 
     public static void main(String[] args) {
-        new TicTacToe().game();
+        new DrawTable().draw();
+//        new TicTacToe().game();
     }
 
     private void game() {
@@ -62,6 +66,12 @@ public class TicTacToe {
         System.out.println("Игра окончена!");
         printTable();
         saveRating(ratingMap);
+        // пишем в xml
+        XmlWriter xmlWriter = new XmlWriter();
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(player1);
+        players.add(player2);
+        xmlWriter.write(steps, players);
         tryAgain();
     }
 
@@ -132,8 +142,10 @@ public class TicTacToe {
         } while (!isCellValid(x, y));
         if (turnPlayer1) {
             table[y][x] = SIGN_X;
+            steps.add(new Step(player1.getId(), x + 1, y + 1));
         } else {
             table[y][x] = SIGN_O;
+            steps.add(new Step(player2.getId(), x + 1, y +1));
         }
         turnPlayer1 = !turnPlayer1;
     }

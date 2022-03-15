@@ -1,31 +1,26 @@
-import org.w3c.dom.Attr;
-import org.w3c.dom.Text;
-
 import javax.xml.namespace.QName;
 import javax.xml.stream.*;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class XmlLoader {
-    private final String fileName;
+    private final String FILE_NAME = "data.xml";
+    static ArrayList<Player> players = new ArrayList<>();
+    static ArrayList<Step> steps = new ArrayList<>();
 
-    public static void main(String[] args) {
-        XmlLoader xmlLoader = new XmlLoader("data.xml");
-    }
+//    public static void main(String[] args) {
+//        XmlLoader xmlLoader = new XmlLoader();
+////        XmlWriter xmlWriter = new XmlWriter();
+////        xmlWriter.write(steps, players);
+//    }
 
-    public XmlLoader(String fileName) {
-        this.fileName = fileName;
+    public void load() {
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-        ArrayList<Player> players = new ArrayList<>();
-        ArrayList<Step> steps = new ArrayList<>();
         try {
             XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream("data.xml"));
             // проходим по всем элементам xml файла
@@ -38,11 +33,12 @@ public class XmlLoader {
                 if (xmlEvent.isStartElement()) {
                     StartElement startElement = xmlEvent.asStartElement();
                     switch (startElement.getName().getLocalPart()) {
-                        case "Player":
+                        case "player":
                             player = new Player();
                             Attribute signAttr = startElement.getAttributeByName(new QName("symbol"));
                             if (signAttr != null) {
                                 player.setSign(signAttr.getValue().charAt(0)); // можно исправить и передавать в метод тип String
+                                System.out.println("SIGN PLAYER = " + signAttr.getValue().charAt(0));
                             }
                             Attribute nameAttr = startElement.getAttributeByName(new QName("name"));
                             if (nameAttr != null) {
@@ -53,7 +49,7 @@ public class XmlLoader {
                                 player.setId(Integer.parseInt(idAttr.getValue()));
                             }
                             break;
-                        case "Step":
+                        case "step":
                             step = new Step();
                             Attribute playerIdAttr = startElement.getAttributeByName(new QName("playerId"));
                             if (playerIdAttr != null) {
@@ -64,38 +60,49 @@ public class XmlLoader {
                                 step.setNum(Integer.parseInt(numAttr.getValue()));
                             }
                             xmlEvent = reader.nextEvent();
-                            step.setValue(Integer.parseInt((xmlEvent.asCharacters().getData().replaceAll(" ", ""))));
+                            step.setValue(Integer.parseInt((xmlEvent.asCharacters().getData())));
                             break;
                     }
                 }
 
                 if (xmlEvent.isEndElement()) {
                     EndElement endElement = xmlEvent.asEndElement();
-                    if (endElement.getName().getLocalPart().equals("Player")) {
+                    if (endElement.getName().getLocalPart().equals("player")) {
                         players.add(player);
                     }
                 }
                 if (xmlEvent.isEndElement()) {
                     EndElement endElement = xmlEvent.asEndElement();
-                    if (endElement.getName().getLocalPart().equals("Step")) {
+                    if (endElement.getName().getLocalPart().equals("step")) {
                         steps.add(step);
                     }
                 }
             }
+            reader.close();
         } catch (XMLStreamException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
 
-        for (Player player : players) {
-            System.out.println("sign = " + player.getSign() + "; name = " +
-                    player.getName() + "; id = " + player.getId());
+//        for (Player player : players) {
+//            System.out.println("sign = " + player.getSign() + "; name = " +
+//                    player.getName() + "; id = " + player.getId());
+//
+//        }
+//        for (Step step : steps) {
+//            System.out.println("playerId = " + step.getPlayerId() + "; num = " +
+//                    step.getNum() + "; value = " + step.getValue());
+//        }
+    }
 
-        }
-        for (Step step : steps) {
-            System.out.println("playerId = " + step.getPlayerId() + "; num = " +
-                    step.getNum() + "; value = " + step.getValue());
-        }
+    public ArrayList<Step> getSteps() {
+        return steps;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 }
