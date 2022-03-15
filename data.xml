@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<gameplay>
+    <players>
+        <player symbol="x" name="Timur" playerId="1"></player>
+        <player symbol="o" name="Marina" playerId="2"></player>
+    </players>
+    <steps>
+        <step playerId="1" num="1">31</step>
+        <step playerId="2" num="2">22</step>
+        <step playerId="1" num="3">21</step>
+        <step playerId="2" num="4">32</step>
+        <step playerId="1" num="5">33</step>
+        <step playerId="2" num="6">13</step>
+        <step playerId="1" num="7">11</step>
+    </steps>
+</gameplay>
