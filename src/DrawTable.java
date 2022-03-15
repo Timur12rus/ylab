@@ -6,17 +6,17 @@ public class DrawTable {
     private final char SIGN_X = 'x';
     private final char SIGN_O = 'o';
     private XmlLoader xmlLoader;
+    ArrayList<Player> players;
 
     public void draw() {
         xmlLoader = new XmlLoader();
         xmlLoader.load();       // загружаем данные из xml
-        initTable();
-        printTable();
         printPlayers();
+        initTable();
     }
 
     private void printPlayers() {
-        ArrayList<Player> players = xmlLoader.getPlayers();
+        players = xmlLoader.getPlayers();
         System.out.println("Имя игрока1 = " + players.get(0).getName() + "; символ игрока1 = " + players.get(0).getSign());
         System.out.println("Имя игрока2 = " + players.get(1).getName() + "; символ игрока2 = " + players.get(1).getSign());
     }
@@ -36,7 +36,11 @@ public class DrawTable {
             if (step.getPlayerId() == 2) {
                 table[y][x] = SIGN_O;
             }
+            printTable();
+            System.out.println();
         }
+        int winnerId = players.get(2).getId();
+        System.out.println("Player " + winnerId + "-> " + players.get(2).getName() + " is winner as '" + players.get(2).getSign() + "'!");
     }
 
     private void printTable() {

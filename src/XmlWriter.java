@@ -6,14 +6,12 @@ import java.util.ArrayList;
 public class XmlWriter {
     private final String FILE_NAME = "data.xml";
 
-    public void write(ArrayList<Step> steps, ArrayList<Player> players) {
+    public void write(ArrayList<Step> steps, ArrayList<Player> players, Player winnerPlayer) {
         try {
             XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
             XMLStreamWriter writer = outputFactory.createXMLStreamWriter(new FileWriter(FILE_NAME));
             writer.writeStartDocument("1.0");
             writer.writeStartElement("gameplay");
-
-            writer.writeStartElement("players");
 
             writer.writeStartElement("player");
             writer.writeAttribute("symbol", String.valueOf(players.get(0).getSign()));
@@ -27,8 +25,7 @@ public class XmlWriter {
             writer.writeAttribute("playerId", String.valueOf(players.get(1).getId()));
             writer.writeEndElement();
 
-            writer.writeEndElement();
-
+            writer.writeStartElement("game");
             writer.writeStartElement("steps");
             int num = 1;
             for (Step step : steps) {
@@ -40,6 +37,15 @@ public class XmlWriter {
                 writer.writeEndElement();
                 num++;
             }
+            writer.writeEndElement();
+            writer.writeEndElement();
+
+            writer.writeStartElement("gameResult");
+            writer.writeStartElement("player");
+            writer.writeAttribute("id", String.valueOf(winnerPlayer.getId()));
+            writer.writeAttribute("name", winnerPlayer.getName());
+            writer.writeAttribute("symbol", String.valueOf(winnerPlayer.getSign()));
+            writer.writeEndElement();
             writer.writeEndElement();
 
             writer.writeEndElement();

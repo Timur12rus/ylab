@@ -1,7 +1,11 @@
 Sasha:0
+Masha:0
 asd:0
+Tom:3
 zxc:1
 Timur:1
 nbmn:0
 tim:3
+Dima:1
 qwe:1
+Mary:0

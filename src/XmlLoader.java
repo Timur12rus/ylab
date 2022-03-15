@@ -10,8 +10,9 @@ import java.util.ArrayList;
 
 public class XmlLoader {
     private final String FILE_NAME = "data.xml";
-    static ArrayList<Player> players = new ArrayList<>();
-    static ArrayList<Step> steps = new ArrayList<>();
+    private static ArrayList<Player> players = new ArrayList<>();
+    private static ArrayList<Step> steps = new ArrayList<>();
+
 
     public void load() {
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
@@ -30,7 +31,7 @@ public class XmlLoader {
                             player = new Player();
                             Attribute signAttr = startElement.getAttributeByName(new QName("symbol"));
                             if (signAttr != null) {
-                                player.setSign(signAttr.getValue().charAt(0)); // можно исправить и передавать в метод тип String
+                                player.setSign(signAttr.getValue().charAt(0));
                             }
                             Attribute nameAttr = startElement.getAttributeByName(new QName("name"));
                             if (nameAttr != null) {

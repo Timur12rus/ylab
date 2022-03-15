@@ -72,11 +72,13 @@ public class TicTacToe {
                 System.out.println("Победил " + namePlayer1 + "!");
                 counterPlayer1++;
                 ratingMap.put(namePlayer1, counterPlayer1);
+                writeXml(player1);
                 isEndGame = true;
             } else if (checkWin(SIGN_O)) {
                 System.out.println("Победил " + namePlayer2 + "!");
                 counterPlayer2++;
                 ratingMap.put(namePlayer2, counterPlayer2);
+                writeXml(player2);
                 isEndGame = true;
             }
             if (isTableFull()) {
@@ -87,13 +89,17 @@ public class TicTacToe {
         System.out.println("Игра окончена!");
         printTable();
         saveRating(ratingMap);
+
+        tryAgain();
+    }
+
+    private void writeXml(Player winnerPlayer) {
         // пишем в xml
         XmlWriter xmlWriter = new XmlWriter();
         ArrayList<Player> players = new ArrayList<>();
         players.add(player1);
         players.add(player2);
-        xmlWriter.write(steps, players);
-        tryAgain();
+        xmlWriter.write(steps, players, winnerPlayer);
     }
 
     private void initPlayers() {
