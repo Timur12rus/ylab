@@ -7,10 +7,6 @@ public class DrawTable {
     private final char SIGN_O = 'o';
     private XmlLoader xmlLoader;
 
-//    public static void main(String[] args) {
-//        new DrawTable().draw();
-//    }
-
     public void draw() {
         xmlLoader = new XmlLoader();
         xmlLoader.load();       // загружаем данные из xml

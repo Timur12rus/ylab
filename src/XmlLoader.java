@@ -13,18 +13,11 @@ public class XmlLoader {
     static ArrayList<Player> players = new ArrayList<>();
     static ArrayList<Step> steps = new ArrayList<>();
 
-//    public static void main(String[] args) {
-//        XmlLoader xmlLoader = new XmlLoader();
-////        XmlWriter xmlWriter = new XmlWriter();
-////        xmlWriter.write(steps, players);
-//    }
-
     public void load() {
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         try {
             XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream("data.xml"));
             // проходим по всем элементам xml файла
-//            ArrayList<Player> players = new ArrayList<>();
             Player player = null;
             Step step = null;
             while (reader.hasNext()) {
@@ -38,7 +31,6 @@ public class XmlLoader {
                             Attribute signAttr = startElement.getAttributeByName(new QName("symbol"));
                             if (signAttr != null) {
                                 player.setSign(signAttr.getValue().charAt(0)); // можно исправить и передавать в метод тип String
-                                System.out.println("SIGN PLAYER = " + signAttr.getValue().charAt(0));
                             }
                             Attribute nameAttr = startElement.getAttributeByName(new QName("name"));
                             if (nameAttr != null) {
@@ -86,16 +78,6 @@ public class XmlLoader {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-
-//        for (Player player : players) {
-//            System.out.println("sign = " + player.getSign() + "; name = " +
-//                    player.getName() + "; id = " + player.getId());
-//
-//        }
-//        for (Step step : steps) {
-//            System.out.println("playerId = " + step.getPlayerId() + "; num = " +
-//                    step.getNum() + "; value = " + step.getValue());
-//        }
     }
 
     public ArrayList<Step> getSteps() {

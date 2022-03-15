@@ -29,11 +29,11 @@ public class XmlWriter {
 
             writer.writeEndElement();
 
-            writer.writeStartElement("Steps");
+            writer.writeStartElement("steps");
             int num = 1;
             for (Step step : steps) {
                 // записываем
-                writer.writeStartElement("Step");
+                writer.writeStartElement("step");
                 writer.writeAttribute("playerId", String.valueOf(step.getPlayerId()));
                 writer.writeAttribute("num", String.valueOf(num));
                 writer.writeCharacters(String.valueOf("" + step.getX() + step.getY()));

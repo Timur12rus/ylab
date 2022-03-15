@@ -30,11 +30,4 @@ public class Player {
     public Player() {
 
     }
-
-    @Override
-    public String toString() {
-        return "symbol = " + sign + "; " +
-                "name = " + name + "; " +
-                "id = " + id;
-    }
 }

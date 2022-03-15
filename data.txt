@@ -1,5 +1,7 @@
+Sasha:0
 asd:0
 zxc:1
+Timur:1
 nbmn:0
 tim:3
 qwe:1

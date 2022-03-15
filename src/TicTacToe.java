@@ -1,3 +1,6 @@
+import com.sun.source.tree.CatchTree;
+
+import javax.xml.catalog.Catalog;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -28,8 +31,26 @@ public class TicTacToe {
     }
 
     public static void main(String[] args) {
-        new DrawTable().draw();
-//        new TicTacToe().game();
+        Scanner scanner = new Scanner(System.in);
+        boolean isExit = false;
+        int num;
+        while (!isExit) {
+            System.out.println("Для начала новой игры введите 1:");
+            System.out.println("Для восстановлениия поля из файла введите 2:");
+            try {
+                num = scanner.nextInt();
+                if (num == 1) {
+                    isExit = true;
+                    new TicTacToe().game();
+                } else if (num == 2) {
+                    isExit = true;
+                    new DrawTable().draw();
+                }
+            } catch (Exception e) {
+                System.out.println("Ошибка ввода!");
+            }
+            scanner.close();
+        }
     }
 
     private void game() {
@@ -145,7 +166,7 @@ public class TicTacToe {
             steps.add(new Step(player1.getId(), x + 1, y + 1));
         } else {
             table[y][x] = SIGN_O;
-            steps.add(new Step(player2.getId(), x + 1, y +1));
+            steps.add(new Step(player2.getId(), x + 1, y + 1));
         }
         turnPlayer1 = !turnPlayer1;
     }
@@ -181,6 +202,7 @@ public class TicTacToe {
 
     private Map<String, Integer> loadRating() {
         HashMap<String, Integer> map = new HashMap<>();
+        System.out.println("Рейтинг игроков:");
         try {
             File file = new File("data.txt");
             Scanner scanner = new Scanner(file);
@@ -192,7 +214,7 @@ public class TicTacToe {
             }
             scanner.close();
         } catch (Exception e) {
-
+            System.out.println("Ошибка!");
         }
         return map;
     }
