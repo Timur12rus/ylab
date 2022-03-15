@@ -15,6 +15,7 @@ public class TicTacToe {
     private static int counterPlayer2;
     private static String namePlayer1;
     private static String namePlayer2;
+    private Player player1, player2;
     private Map<String, Integer> ratingMap;
 
     public TicTacToe() {
@@ -30,7 +31,7 @@ public class TicTacToe {
     private void game() {
         initPlayers();
         ratingMap = loadRating();
-        if (!ratingMap.containsKey(namePlayer1)) {
+        if (!ratingMap.containsKey(player1.getName())) {
             ratingMap.put(namePlayer1, 0);
         }
         if (!ratingMap.containsKey(namePlayer2)) {
@@ -65,11 +66,19 @@ public class TicTacToe {
     }
 
     private void initPlayers() {
+        player1 = new Player();
+        player2 = new Player();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите имя первого игрока: ");
-        namePlayer1 = scanner.nextLine();
+        player1.setName(scanner.nextLine());
         System.out.println("Введите имя второго игрока: ");
-        namePlayer2 = scanner.nextLine();
+        player2.setName(scanner.nextLine());
+        player1.setId(1);
+        player2.setId(2);
+        player1.setSign(SIGN_X);
+        player2.setSign(SIGN_O);
+        namePlayer1 = player1.getName();
+        namePlayer2 = player2.getName();
     }
 
     private void tryAgain() {

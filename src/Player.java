@@ -33,8 +33,8 @@ public class Player {
 
     @Override
     public String toString() {
-        return "symbol = " + Character.toString(getSign()) + "; " +
-                "name = " + getName() + "; " +
-                "id = " + getId();
+        return "symbol = " + sign + "; " +
+                "name = " + name + "; " +
+                "id = " + id;
     }
 }
