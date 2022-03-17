@@ -39,8 +39,12 @@ public class DrawTable {
             printTable();
             System.out.println();
         }
-        int winnerId = players.get(2).getId();
-        System.out.println("Player " + winnerId + "-> " + players.get(2).getName() + " is winner as '" + players.get(2).getSign() + "'!");
+        if (players.size() == 3 && players.get(2) != null) {
+            int winnerId = players.get(2).getId();
+            System.out.println("Player " + winnerId + "-> " + players.get(2).getName() + " is winner as '" + players.get(2).getSign() + "'!");
+        } else {
+            System.out.println("Ничья!");
+        }
     }
 
     private void printTable() {

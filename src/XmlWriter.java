@@ -40,13 +40,19 @@ public class XmlWriter {
             writer.writeEndElement();
             writer.writeEndElement();
 
+
             writer.writeStartElement("gameResult");
-            writer.writeStartElement("player");
-            writer.writeAttribute("id", String.valueOf(winnerPlayer.getId()));
-            writer.writeAttribute("name", winnerPlayer.getName());
-            writer.writeAttribute("symbol", String.valueOf(winnerPlayer.getSign()));
+            if (winnerPlayer != null) {
+                writer.writeStartElement("player");
+                writer.writeAttribute("id", String.valueOf(winnerPlayer.getId()));
+                writer.writeAttribute("name", winnerPlayer.getName());
+                writer.writeAttribute("symbol", String.valueOf(winnerPlayer.getSign()));
+                writer.writeEndElement();
+            } else {
+                writer.writeCharacters("Ничья!");
+            }
             writer.writeEndElement();
-            writer.writeEndElement();
+
 
             writer.writeEndElement();
             writer.writeEndDocument();

@@ -1,17 +1,19 @@
 <?xml version="1.0"?>
 <gameplay>
-    <player symbol="x" name="Tom" playerId="1"></player>
-    <player symbol="o" name="Mary" playerId="2"></player>
+    <player symbol="x" name="Ешь" playerId="1"></player>
+    <player symbol="o" name="ячс" playerId="2"></player>
     <game>
         <steps>
-            <step playerId="1" num="1">33</step>
+            <step playerId="1" num="1">31</step>
             <step playerId="2" num="2">11</step>
-            <step playerId="1" num="3">23</step>
-            <step playerId="2" num="4">22</step>
-            <step playerId="1" num="5">13</step>
+            <step playerId="1" num="3">21</step>
+            <step playerId="2" num="4">32</step>
+            <step playerId="1" num="5">12</step>
+            <step playerId="2" num="6">22</step>
+            <step playerId="1" num="7">33</step>
+            <step playerId="2" num="8">23</step>
+            <step playerId="1" num="9">13</step>
         </steps>
     </game>
-    <gameResult>
-        <player id="1" name="Tom" symbol="x"></player>
-    </gameResult>
+    <gameResult>Ничья!</gameResult>
 </gameplay>

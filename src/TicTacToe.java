@@ -47,6 +47,7 @@ public class TicTacToe {
                     new DrawTable().draw();
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 System.out.println("Ошибка ввода!");
             }
             scanner.close();
@@ -83,6 +84,7 @@ public class TicTacToe {
             }
             if (isTableFull()) {
                 System.out.println("Ничья!");
+                writeXml(null);
                 isEndGame = true;
             }
         }
